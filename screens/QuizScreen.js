@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; // Import FontAwesome for the star icon
+import { useNavigation } from '@react-navigation/native'; // Import navigation
+import { usePoints } from '../context/PointsContext'; // Import Points Context
 
 const quizQuestions = [
   {
@@ -31,14 +41,16 @@ const quizQuestions = [
 ];
 
 export default function QuizScreen() {
+  const { homePoints, setHomePoints } = usePoints(); // Use context to manage points
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [points, setPoints] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
+
+  const navigation = useNavigation(); // Initialize navigation
 
   const handleOptionPress = (index) => {
     setSelectedOption(index);
     if (index === quizQuestions[currentQuestion].answer) {
-      setPoints((prevPoints) => prevPoints + 20); // Ensure proper state updates
+      setHomePoints((prevPoints) => prevPoints + 20); // Update points using context
     }
   };
 
@@ -47,7 +59,25 @@ export default function QuizScreen() {
       setCurrentQuestion((prevQuestion) => prevQuestion + 1);
       setSelectedOption(null);
     } else {
-      alert(`Quiz completed! You scored ${points} points.`);
+      // Alert the user and suggest navigating to FriendsScreen
+      Alert.alert(
+        'Quiz Completed!',
+        `You scored ${homePoints} points.`,
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'Go to Friends',
+            onPress: () =>
+              navigation.navigate('Friends', {
+                homePoints, // Pass points from context
+                quizPoints: homePoints, // Same value as updated points
+              }),
+          },
+        ]
+      );
     }
   };
 
@@ -61,7 +91,7 @@ export default function QuizScreen() {
           {/* Points Container */}
           <View style={styles.pointsContainer}>
             <FontAwesome name="star" size={24} color="gold" />
-            <Text style={styles.pointsText}>{points} Points</Text>
+            <Text style={styles.pointsText}>{homePoints} Points</Text>
           </View>
 
           {/* Quiz Question */}
@@ -83,7 +113,9 @@ export default function QuizScreen() {
 
           {/* Next Button */}
           <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-            <Text style={styles.nextText}>Next</Text>
+            <Text style={styles.nextText}>
+              {currentQuestion < quizQuestions.length - 1 ? 'Next' : 'Finish'}
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

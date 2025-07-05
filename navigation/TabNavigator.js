@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from '../screens/HomeScreen';
 import QuizScreen from '../screens/QuizScreen';
 import FriendsScreen from '../screens/FriendsScreen';
+import LoginScreen from '../screens/LoginScreen'; // Import the LoginScreen
 
 const Tab = createBottomTabNavigator();
 
@@ -13,7 +14,8 @@ export default function TabNavigator() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           let iconName;
-          if (route.name === 'Home') iconName = 'home';
+          if (route.name === 'Login') iconName = 'log-in'; // Icon for Login tab
+          else if (route.name === 'Home') iconName = 'home';
           else if (route.name === 'Quiz') iconName = 'list';
           else if (route.name === 'Friends') iconName = 'people';
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -22,6 +24,7 @@ export default function TabNavigator() {
         tabBarInactiveTintColor: 'gray',
       })}
     >
+      <Tab.Screen name="Login" component={LoginScreen} />
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Quiz" component={QuizScreen} />
       <Tab.Screen name="Friends" component={FriendsScreen} />
