@@ -21,3 +21,10 @@ Social Comparison	Leaderboards help users compare efforts with peers
 Commitment & Consistency	Users can make public pledges to stay accountable
 Reminders	Timely notifications to sustain engagement
 Rewards	Gamified elements like badges keep users motivated
+
+## 🎥 Demo
+
+Watch a short demo of **EcoLearn** in action:
+
+▶️ [EcoLearn YouTube Demo](https://youtube.com/shorts/Fafu96Ym1To?si=uUeUqfw9H8-bZ-Je)
+
